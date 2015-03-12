@@ -42,6 +42,51 @@ class SimplisticTest(unittest.TestCase):
         #print json_data["root"]["table"][0]["tr"]
         self.assertTrue("table" in json_data["root"])
         self.assertEqual(json_data["root"]["table"][0]["tr"]["td"] , ["Apples", "Bananas"])
+    def test_json2xml(self):
+        json_string = '{"e": { "@name": "value" }}'
+        xml_string = '<e name="value" />' 
+        final_string = xml2json.json2xml(json_string)
+        self.assertTrue(xml_string == final_string) 
+
+        json_data = '{"e": { "a": ["text", "text"] }}'
+        xml_data = '<e><a>text</a><a>text</a></e>'
+        res = xml2json.json2xml(json_data)
+        self.assertEqual(res, xml_data)
+
+        json_data = '{"e": { "#text": "text", "a": "text" }}'
+        xml_data = '<e>text<a>text</a></e>'
+        res = xml2json.json2xml(json_data)
+        self.assertEqual(res, xml_data)
+
+        json_data = '{"e": "text"}'
+        xml_data = '<e>text</e>'
+        res = xml2json.json2xml(json_data)
+        self.assertEqual(res, xml_data)
+
+
+    def test_main(self):
+        xml2json.main()
+
+    def test_json(self):
+        json_data = '{"dict":{"first":"1","second":"2"}}'
+        xml_string = xml2json.json2xml(json_data)
+        self.assertTrue(xml_string == "<dict><first>1</first><second>2</second></dict>")
+
+    def test_jsON(self):
+        json_data = '{"list":{"@":"1","#text":"1","#tail":"2","asd":["sadf","qweqw"],"a":"1"}}'
+        xml_string = xml2json.json2xml(json_data)
+   
+    def test_xml2json(self):
+        json = '{"e": { "@name": "value"}}'
+        test = '<e name="value" />'
+        result = xml2json.xml2json(test,options)
+        self.assertEqual(result,json)
+
+    def test_jsonToXml(self):
+        json_data = '{"a":"1"}'
+        xml_string = xml2json.json2xml(json_data)
+        self.assertTrue(xml_string == "<a>1</a>")
+
 
 if __name__ == '__main__':
     unittest.main()
